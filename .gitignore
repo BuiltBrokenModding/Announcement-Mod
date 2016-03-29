@@ -2,3 +2,5 @@
 build/
 output/
 .gradle/
+.idea/
+Announcement-Mod.txt
