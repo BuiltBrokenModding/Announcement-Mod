@@ -4,3 +4,6 @@ output/
 .gradle/
 .idea/
 Announcement-Mod.txt
+*.ipr
+*.iws
+AI-Improvements.txt
