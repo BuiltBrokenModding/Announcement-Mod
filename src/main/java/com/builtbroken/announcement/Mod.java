@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLModDisabledEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class Mod
     @net.minecraftforge.fml.common.Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        LOGGER = LogManager.getLogger("External Announcements");
         Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "AnnouncementsMod.cfg"));
         config.load();
         announcementPath = config.getString("AnnouncementPath", Configuration.CATEGORY_GENERAL, "URL:https://dl.dropboxusercontent.com/u/70622753/work/announcementTestFile.txt", "Web or local path that will be used to access the announcements file.");
