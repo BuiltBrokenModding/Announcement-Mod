@@ -34,10 +34,9 @@ public class Mod
     {
         Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "bbm/AI_Improvements.cfg"));
         config.load();
-        announcementPath = config.getString("AnnouncementPath", Configuration.CATEGORY_GENERAL, "null", "Web or local path that announcements will be downloaded.");
+        announcementPath = config.getString("AnnouncementPath", Configuration.CATEGORY_GENERAL, "URL:https://dl.dropboxusercontent.com/u/70622753/work/announcementTestFile.txt", "Web or local path that will be used to access the announcements file.");
         config.save();
-
-        FMLCommonHandler.instance().bus().register(proxy);
         proxy.preInit();
+        FMLCommonHandler.instance().bus().register(proxy);
     }
 }
