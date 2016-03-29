@@ -32,7 +32,7 @@ public class Mod
     @cpw.mods.fml.common.Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "bbm/AI_Improvements.cfg"));
+        Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "AnnouncementsMod"));
         config.load();
         announcementPath = config.getString("AnnouncementPath", Configuration.CATEGORY_GENERAL, "URL:https://dl.dropboxusercontent.com/u/70622753/work/announcementTestFile.txt", "Web or local path that will be used to access the announcements file.");
         config.save();
