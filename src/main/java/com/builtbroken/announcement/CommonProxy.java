@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class CommonProxy
 {
-    protected List<Announcement> announcementList = new ArrayList();
+    public List<Announcement> announcementList = new ArrayList();
 
     public void preInit()
     {
@@ -22,7 +22,7 @@ public class CommonProxy
     /**
      * Called to process the announcement path loaded from config or sent by packets
      */
-    protected void process()
+    public void process()
     {
         if (true || Mod.announcementPath != null && !Mod.announcementPath.isEmpty() && !Mod.announcementPath.equals("null"))
         {
@@ -77,7 +77,14 @@ public class CommonProxy
                             textSoFar += inputLine;
                         }
                         in.close();
-                        processTextFile(textSoFar);
+                        try
+                        {
+                            processTextFile(textSoFar);
+                        }
+                        catch (Exception e)
+                        {
+                            Mod.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
+                        }
                     }
                     catch (FileNotFoundException e)
                     {
@@ -100,7 +107,7 @@ public class CommonProxy
         }
     }
 
-    protected void processTextFile(String string)
+    public void processTextFile(String string) throws RuntimeException
     {
         if (string.contains("{") && string.contains("}"))
         {
@@ -109,76 +116,98 @@ public class CommonProxy
                 //Get start and end point for this line
                 int start = string.indexOf("{");
                 int end = string.indexOf("}");
-                //Get sub string for out line
-                String sub = string.substring(start, end).replace("{", "");
-
-                if (sub.contains(","))
+                if (start != -1 && end != -1)
                 {
-                    String[] split = sub.split(",");
-                    Announcement announcement = new Announcement();
-                    announcement.text = split[0].replace("\"", "");
+                    //Get sub string for out line
+                    String sub = string.substring(start + 1, end).replace("{", "").trim();
 
-                    try
+                    if (sub.contains(","))
                     {
-                        if (split[1].endsWith("s"))
+                        String[] split = sub.split(",");
+
+                        if (!split[0].contains("\"") || split[0].replace("\"", "").trim().isEmpty())
                         {
-                            announcement.delayToStartInSeconds = Integer.parseInt(split[1].trim().replace("s", ""));
+                            throw new RuntimeException("Invalid format for section[" + sub + "] as message can not be empty");
                         }
-                        else if (split[1].endsWith("m"))
-                        {
-                            announcement.delayToStartInSeconds = Integer.parseInt(split[1].trim().replace("m", "")) * 60;
-                        }
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        //TODO errors
-                        e.printStackTrace();
-                    }
-                    if (split.length > 2)
-                    {
+                        Announcement announcement = new Announcement();
+                        announcement.text = split[0].replace("\"", "").trim();
+
                         try
                         {
                             if (split[1].endsWith("s"))
                             {
-                                announcement.repeatIntervalInSeconds = Integer.parseInt(split[2].trim().replace("s", ""));
+                                announcement.delayToStartInSeconds = Integer.parseInt(split[1].trim().replace("s", ""));
                             }
                             else if (split[1].endsWith("m"))
                             {
-                                announcement.repeatIntervalInSeconds = Integer.parseInt(split[2].trim().replace("m", "")) * 60;
+                                announcement.delayToStartInSeconds = Integer.parseInt(split[1].trim().replace("m", "")) * 60;
+                            }
+                            else
+                            {
+                                throw new RuntimeException("Invalid format for section[" + sub + "] when parsing " + split[1] + " it should end in an s or m.");
                             }
                         }
                         catch (NumberFormatException e)
                         {
-                            //TODO errors
-                            e.printStackTrace();
+                            throw new RuntimeException("Invalid format for section[" + sub + "] when parsing " + split[1], e);
+                        }
+                        if (split.length > 2)
+                        {
+                            try
+                            {
+                                if (split[1].endsWith("s"))
+                                {
+                                    announcement.repeatIntervalInSeconds = Integer.parseInt(split[2].trim().replace("s", ""));
+                                }
+                                else if (split[1].endsWith("m"))
+                                {
+                                    announcement.repeatIntervalInSeconds = Integer.parseInt(split[2].trim().replace("m", "")) * 60;
+                                }
+                                else
+                                {
+                                    throw new RuntimeException("Invalid format for section[" + sub + "] when parsing " + split[1] + " it should end in an s or m.");
+                                }
+                            }
+                            catch (NumberFormatException e)
+                            {
+                                throw new RuntimeException("Invalid format for section[" + sub + "] when parsing " + split[1], e);
+                            }
+                        }
+                        announcementList.add(announcement);
+                    }
+                    else if (sub.contains("\""))
+                    {
+                        sub = sub.replace("\"", "").trim();
+                        if (!sub.isEmpty())
+                        {
+                            Announcement announcement = new Announcement();
+                            announcement.text = sub.replaceAll("\"", "").trim();
+                            announcementList.add(announcement);
+                        }
+                        else
+                        {
+                            throw new RuntimeException("Invalid format for section[" + sub + "] as message is empty");
                         }
                     }
-                    announcementList.add(announcement);
-                }
-                else if (string.contains("\""))
-                {
-                    Announcement announcement = new Announcement();
-                    announcement.text = sub;
-                    announcementList.add(announcement);
-                }
-                else
-                {
-                    //TODO errors
-                }
-                //Set what is left
-                if (end + 2 < string.length())
-                {
-                    string = string.substring(end + 2);
-                }
-                else
-                {
-                    break;
+                    else
+                    {
+                        throw new RuntimeException("Invalid format for section[" + sub + "]");
+                    }
+                    //Set what is left
+                    if (end + 2 < string.length())
+                    {
+                        string = string.substring(end + 2);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
         }
         else
         {
-            //TODO send error message
+            throw new RuntimeException("Invalid format for section input[" + string + "]\nIt should start with '{' and end with '}' for each section");
         }
     }
 }
