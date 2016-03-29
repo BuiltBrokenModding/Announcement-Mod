@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class Announcement
 {
-    String text = "test";
-    boolean firstCall = false;
-    int delayToStartInSeconds = 10;
-    int repeatIntervalInSeconds = -1;
+    public String text = "test";
+    public boolean firstCall = false;
+    public int delayToStartInSeconds = 10;
+    public int repeatIntervalInSeconds = -1;
 
     long lastTrigger = 0L;
 
