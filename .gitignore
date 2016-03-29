@@ -2,3 +2,8 @@
 build/
 output/
 .gradle/
+out/
+*.ipr
+*.iws
+Announcement-Mod.txt
+AI-Improvements.txt
