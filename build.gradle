@@ -22,24 +22,11 @@ apply plugin: 'scala'
 //applies the forge plugin
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-apply from:'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.9/scripts/both/getbuildnumber.gradle'
 
-minecraft {
-    version = "1.9-12.16.0.1811-1.9"
-    runDir = "run"
-    mappings = "snapshot_20160328"
-    replace "@MAJOR@", version_major
-    replace "@MINOR@", version_minor
-    replace "@REVIS@", version_revis
-    replace "@BUILD@", project.getBuildNumber()
-}
-
-println "Current Minecraft version = " + minecraft.version + "-" + minecraft.forgeVersion
-
-//apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.9/index/index.gradle'
+apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.9/index/index.gradle'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'jacoco'
-
+apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.9/scripts/forge/deps.gradle'
 jacocoTestReport {
     reports {
         xml.enabled = true // coveralls plugin depends on xml format report
