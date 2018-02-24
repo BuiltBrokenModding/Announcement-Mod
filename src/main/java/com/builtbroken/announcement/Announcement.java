@@ -1,7 +1,7 @@
 package com.builtbroken.announcement;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +34,7 @@ public class Announcement
         {
             lastTrigger = System.currentTimeMillis();
             firstCall = true;
-            player.addChatComponentMessage(new ChatComponentText(text));
+            player.sendMessage(new TextComponentString(text));
         }
     }
 
