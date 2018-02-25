@@ -15,7 +15,7 @@ buildscript {
        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath "org.ajoberstar:grgit:2.1.0"
     }
 }
@@ -27,7 +27,7 @@ plugins {
   id "se.bjurr.gitchangelog.git-changelog-gradle-plugin" version "1.50"
 }
 
-apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.12.2/index/index.gradle'
+apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.11.2/index/index.gradle'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'jacoco'
 apply plugin: "org.ajoberstar.grgit"
