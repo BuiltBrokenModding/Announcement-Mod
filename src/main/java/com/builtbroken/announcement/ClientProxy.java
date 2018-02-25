@@ -17,13 +17,13 @@ public class ClientProxy extends CommonProxy
     {
         ticks++;
         //Minecraft needs to be loaded, with a player, in a world, and the game needs to have focus
-        if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().player != null && Minecraft.getMinecraft().inGameHasFocus && Minecraft.getMinecraft().world != null && ticks % 20 == 0)
+        if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().inGameHasFocus && Minecraft.getMinecraft().theWorld != null && ticks % 20 == 0)
         {
             for (Announcement announcement : announcementList)
             {
                 if (announcement.shouldTrigger(System.currentTimeMillis()))
                 {
-                    announcement.outputToPlayer(Minecraft.getMinecraft().player);
+                    announcement.outputToPlayer(Minecraft.getMinecraft().thePlayer);
                 }
             }
         }

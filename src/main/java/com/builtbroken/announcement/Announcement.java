@@ -34,7 +34,7 @@ public class Announcement
         {
             lastTrigger = System.currentTimeMillis();
             firstCall = true;
-            player.sendMessage(new TextComponentString(text));
+            player.addChatComponentMessage(new TextComponentString(text));
         }
     }
 
