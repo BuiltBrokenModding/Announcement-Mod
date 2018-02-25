@@ -36,7 +36,7 @@ public class Mod
         LOGGER = LogManager.getLogger("External Announcements");
         Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "AnnouncementsMod.cfg"));
         config.load();
-        announcementPath = config.getString("AnnouncementPath", Configuration.CATEGORY_GENERAL, "URL:https://dl.dropboxusercontent.com/u/70622753/work/announcementTestFile.txt", "Web or local path that will be used to access the announcements file.");
+        announcementPath = config.getString("AnnouncementPath", Configuration.CATEGORY_GENERAL, "URL:https://gist.githubusercontent.com/Hennamann/9a0f686213b0bb377e9600fe55bd7736/raw/c437c705c6d2c3e2972060eabf766a687c2e60c3/test-announcement.txt", "Web or local path that will be used to access the announcements file.");
         config.save();
         proxy.preInit();
         FMLCommonHandler.instance().bus().register(proxy);
