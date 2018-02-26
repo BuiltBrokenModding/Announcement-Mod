@@ -27,6 +27,7 @@ public class CommonProxy
     /**
      * Called to process the announcement path loaded from config or sent by packets
      */
+    @SuppressWarnings("unchecked")
     public void process()
     {
         if (true || Mod.announcementPath != null && !Mod.announcementPath.isEmpty() && !Mod.announcementPath.equals("null"))
@@ -193,6 +194,7 @@ public class CommonProxy
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void processTextFile(String string) throws RuntimeException
     {
         if (string.contains("{") && string.contains("}"))
