@@ -1,5 +1,10 @@
 package com.builtbroken.announcement;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -96,14 +101,95 @@ public class CommonProxy
                     }
                 }
             }
-            else if (path.endsWith(".xml"))
-            {
+            else if (path.endsWith(".json")) {
+                BufferedReader in = null;
 
+                //Get out data stream
+                if (isURL) {
+                    try {
+                        URL url = new URL(path);
+                        in = new BufferedReader(new InputStreamReader(url.openStream()));
+                    }
+                    catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if (isFile) {
+                    File file = new File(path);
+                    try {
+                        in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+                    }
+                    catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //If we have a stream
+                if (in != null) {
+                    try {
+                        //Convert stream into a large string TODO find better way
+                        String textSoFar = "";
+                        String inputLine;
+                        while ((inputLine = in.readLine()) != null) {
+                            textSoFar += inputLine;
+                        }
+                        in.close();
+                        try {
+                            processJsonFile(textSoFar);
+                        }
+                        catch (Exception e) {
+                            Mod.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
+                        }
+                    }
+                    catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            else if (path.endsWith(".json"))
-            {
+        }
+    }
 
+    /**
+     * Parses the JSON file using Gson.
+     * TODO Add more error/exception handling.
+     */
+    public void processJsonFile(String string) throws RuntimeException {
+
+        JsonElement jelement = new JsonParser().parse(string);
+        JsonObject jobject = jelement.getAsJsonObject();
+        JsonArray jarray = jobject.getAsJsonArray("messages");
+        for(int i = 0 ; i < jarray.size(); i++) {
+
+            Announcement announcement = new Announcement();
+
+            jobject = jarray.get(i).getAsJsonObject();
+            String message = jobject.get("message").getAsString();
+            String delay = jobject.get("delayTime").getAsString();
+            String waitTime = jobject.get("waitTime").getAsString();
+
+            announcement.text = message;
+            if (delay.endsWith("s")) {
+                announcement.delayToStartInSeconds = Integer.parseInt(delay.trim().replace("s", ""));
+            } else if (delay.endsWith("m")) {
+                announcement.delayToStartInSeconds = Integer.parseInt(delay.trim().replace("m", ""));
+            } else {
+                throw new RuntimeException("Invalid delayTime it can only be set in seconds(s) or minutes(m)");
             }
+
+            if (waitTime.endsWith("s")) {
+                announcement.repeatIntervalInSeconds = Integer.parseInt(waitTime.trim().replace("s", ""));
+            } else if (waitTime.endsWith("m")) {
+                announcement.repeatIntervalInSeconds = Integer.parseInt(waitTime.trim().replace("m", ""));
+            } else {
+                throw new RuntimeException("Invalid waitTime it can only be set in seconds(s) or minutes(m)");
+            }
+
+            announcementList.add(announcement);
         }
     }
 

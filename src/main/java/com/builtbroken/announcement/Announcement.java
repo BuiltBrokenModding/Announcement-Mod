@@ -2,6 +2,7 @@ package com.builtbroken.announcement;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,8 +10,7 @@ import java.util.concurrent.TimeUnit;
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 3/28/2016.
  */
-public class Announcement
-{
+public class Announcement {
     public String text = "test";
     public boolean firstCall = false;
     public int delayToStartInSeconds = 10;
@@ -18,10 +18,7 @@ public class Announcement
 
     long lastTrigger = 0L;
 
-    public Announcement()
-    {
-
-    }
+    public Announcement() {}
 
     /**
      * Sends the text to the player
