@@ -14,7 +14,9 @@ import java.util.List;
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 3/28/2016.
+ * TODO: Fix generics to avoid SuppressWarnings
  */
+@SuppressWarnings("unchecked")
 public class CommonProxy
 {
     public List<Announcement> announcementList = new ArrayList();
@@ -27,7 +29,6 @@ public class CommonProxy
     /**
      * Called to process the announcement path loaded from config or sent by packets
      */
-    @SuppressWarnings("unchecked")
     public void process()
     {
         if (true || Mod.announcementPath != null && !Mod.announcementPath.isEmpty() && !Mod.announcementPath.equals("null"))
@@ -194,7 +195,6 @@ public class CommonProxy
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void processTextFile(String string) throws RuntimeException
     {
         if (string.contains("{") && string.contains("}"))
