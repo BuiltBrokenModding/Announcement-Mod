@@ -143,7 +143,12 @@ public class CommonProxy
             String delay = jobject.get("delayTime").getAsString();
             String waitTime = jobject.get("waitTime").getAsString();
 
-            announcement.text = message;
+            if (announcement.text.isEmpty()) {
+                throw new RuntimeException("Message cannot be empty");
+            } else {
+                announcement.text = message;
+            }
+
             if (delay.endsWith("s")) {
                 announcement.delayToStartInSeconds = Integer.parseInt(delay.trim().replace("s", ""));
             } else if (delay.endsWith("m")) {
