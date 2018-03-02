@@ -2,6 +2,7 @@ package com.builtbroken.announcement.proxy;
 
 import com.builtbroken.announcement.announcement.Announcement;
 import com.builtbroken.announcement.ExternalAnnouncements;
+import com.builtbroken.announcement.config.AnnouncementConfig;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -33,9 +34,9 @@ public class CommonProxy
      */
     public void process()
     {
-        if (true || ExternalAnnouncements.announcementPath != null && !ExternalAnnouncements.announcementPath.isEmpty() && !ExternalAnnouncements.announcementPath.equals("null"))
+        if (true || AnnouncementConfig.ANNOUNCEMENT_PATH != null && !AnnouncementConfig.ANNOUNCEMENT_PATH.isEmpty() && !AnnouncementConfig.ANNOUNCEMENT_PATH.equals("null"))
         {
-            String path = ExternalAnnouncements.announcementPath.trim();
+            String path = AnnouncementConfig.ANNOUNCEMENT_PATH.trim();
             boolean isURL = path.startsWith("URL:");
             boolean isFile = path.startsWith("FILE:");
             path = path.replaceFirst("URL:", "").replaceFirst("FILE:", "");

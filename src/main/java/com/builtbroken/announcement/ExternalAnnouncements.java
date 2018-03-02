@@ -22,8 +22,6 @@ public class ExternalAnnouncements
 {
     public static Logger LOGGER;
 
-    public static String announcementPath;
-
     @net.minecraftforge.fml.common.Mod.Metadata("bbm_announcements")
     public static ModMetadata meta;
 
@@ -41,10 +39,6 @@ public class ExternalAnnouncements
     {
         LOGGER = LogManager.getLogger("External Announcements");
         this.loadModMeta();
-        Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "AnnouncementsMod.cfg"));
-        config.load();
-        announcementPath = config.getString("AnnouncementPath", Configuration.CATEGORY_GENERAL, "URL:https://gist.githubusercontent.com/Hennamann/8bd0d12ef254b95e82dbf6cabd267317/raw/e6701b1874a4d61195e2817417cef717aa1cda57/test-announcement.json", "Web or local path that will be used to access the announcements file.");
-        config.save();
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(proxy);
     }

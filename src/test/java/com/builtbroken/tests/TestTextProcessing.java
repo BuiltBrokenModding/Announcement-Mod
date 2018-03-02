@@ -1,6 +1,7 @@
 package com.builtbroken.tests;
 
 import com.builtbroken.announcement.ExternalAnnouncements;
+import com.builtbroken.announcement.config.AnnouncementConfig;
 import com.builtbroken.announcement.proxy.CommonProxy;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class TestTextProcessing extends TestCase
     public void testTextURL()
     {
         //{"Hello this is a test message", 10s, 100s}, {"Hello this is a second test message", 20s, 100s}
-        ExternalAnnouncements.announcementPath = "URL:https://gist.githubusercontent.com/Hennamann/9a0f686213b0bb377e9600fe55bd7736/raw/c437c705c6d2c3e2972060eabf766a687c2e60c3/test-announcement.txt";
+        AnnouncementConfig.ANNOUNCEMENT_PATH = "URL:https://gist.githubusercontent.com/Hennamann/9a0f686213b0bb377e9600fe55bd7736/raw/c437c705c6d2c3e2972060eabf766a687c2e60c3/test-announcement.txt";
         CommonProxy proxy = new CommonProxy();
         proxy.process();
         assertTrue(proxy.announcementList.size() == 2);
