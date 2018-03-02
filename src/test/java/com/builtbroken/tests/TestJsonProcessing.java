@@ -13,7 +13,7 @@ public class TestJsonProcessing extends TestCase {
 
     @Test
     public void testJsonURLandMessage() {
-        //{"Hello this is a test message", 10s, 100s}, {"Hello this is a second test message", 20s, 100s}
+        // {"messages":[{"message":"Hello this is a test message","delayTime":"10s","waitTime":"100s"},{"message":"Hello this is a second test message","delayTime":"20s","waitTime":"100s"}]
         AnnouncementConfig.ANNOUNCEMENT_PATH = "URL:https://gist.githubusercontent.com/Hennamann/8bd0d12ef254b95e82dbf6cabd267317/raw/e6701b1874a4d61195e2817417cef717aa1cda57/test-announcement.json";
         CommonProxy proxy = new CommonProxy();
         proxy.process();
