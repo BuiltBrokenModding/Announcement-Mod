@@ -1,5 +1,7 @@
-package com.builtbroken.announcement;
+package com.builtbroken.announcement.proxy;
 
+import com.builtbroken.announcement.announcement.Announcement;
+import com.builtbroken.announcement.ExternalAnnouncements;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -31,9 +33,9 @@ public class CommonProxy
      */
     public void process()
     {
-        if (true || Mod.announcementPath != null && !Mod.announcementPath.isEmpty() && !Mod.announcementPath.equals("null"))
+        if (true || ExternalAnnouncements.announcementPath != null && !ExternalAnnouncements.announcementPath.isEmpty() && !ExternalAnnouncements.announcementPath.equals("null"))
         {
-            String path = Mod.announcementPath.trim();
+            String path = ExternalAnnouncements.announcementPath.trim();
             boolean isURL = path.startsWith("URL:");
             boolean isFile = path.startsWith("FILE:");
             path = path.replaceFirst("URL:", "").replaceFirst("FILE:", "");
@@ -90,7 +92,7 @@ public class CommonProxy
                         }
                         catch (Exception e)
                         {
-                            Mod.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
+                            ExternalAnnouncements.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
                         }
                     }
                     catch (FileNotFoundException e)
@@ -142,7 +144,7 @@ public class CommonProxy
                             processJsonFile(textSoFar);
                         }
                         catch (Exception e) {
-                            Mod.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
+                            ExternalAnnouncements.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
                         }
                     }
                     catch (FileNotFoundException e) {

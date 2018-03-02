@@ -1,5 +1,6 @@
-package com.builtbroken.announcement;
+package com.builtbroken.announcement.proxy;
 
+import com.builtbroken.announcement.announcement.Announcement;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;

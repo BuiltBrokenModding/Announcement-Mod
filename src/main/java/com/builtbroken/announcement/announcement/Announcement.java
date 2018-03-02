@@ -1,4 +1,4 @@
-package com.builtbroken.announcement;
+package com.builtbroken.announcement.announcement;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;

@@ -1,5 +1,6 @@
 package com.builtbroken.announcement;
 
+import com.builtbroken.announcement.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.ModMetadata;
@@ -17,7 +18,7 @@ import java.util.Arrays;
  * Created by Dark(DarkGuardsman, Robert) on 3/28/2016.
  */
 @net.minecraftforge.fml.common.Mod(modid = "bbm_announcements", name = "External Announcements", version = "@MAJOR@.@MINOR@.@REVIS@.@BUILD@", acceptableRemoteVersions = "*", canBeDeactivated = true)
-public class Mod
+public class ExternalAnnouncements
 {
     public static Logger LOGGER;
 
@@ -26,7 +27,7 @@ public class Mod
     @net.minecraftforge.fml.common.Mod.Metadata("bbm_announcements")
     public static ModMetadata meta;
 
-    @SidedProxy(clientSide = "com.builtbroken.announcement.ClientProxy", serverSide = "com.builtbroken.announcement.ServerProxy")
+    @SidedProxy(clientSide = "com.builtbroken.announcement.proxy.ClientProxy", serverSide = "com.builtbroken.announcement.proxy.ServerProxy")
     public static CommonProxy proxy;
 
     @net.minecraftforge.fml.common.Mod.EventHandler
