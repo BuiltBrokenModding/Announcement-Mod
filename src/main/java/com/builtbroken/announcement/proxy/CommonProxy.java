@@ -129,7 +129,7 @@ public class CommonProxy
      * Parses the JSON file using Gson.
      * TODO Add more error/exception handling.
      */
-    private void processJsonFile(String string) throws RuntimeException {
+    public void processJsonFile(String string) throws RuntimeException {
 
         JsonElement jelement = new JsonParser().parse(string);
         JsonObject jobject = jelement.getAsJsonObject();

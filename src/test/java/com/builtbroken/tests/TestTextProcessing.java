@@ -1,6 +1,5 @@
 package com.builtbroken.tests;
 
-import com.builtbroken.announcement.ExternalAnnouncements;
 import com.builtbroken.announcement.config.AnnouncementConfig;
 import com.builtbroken.announcement.proxy.CommonProxy;
 import junit.framework.TestCase;
