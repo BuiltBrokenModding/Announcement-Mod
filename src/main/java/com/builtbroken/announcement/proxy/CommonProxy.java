@@ -9,20 +9,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 3/28/2016.
- * TODO: Fix generics to avoid SuppressWarnings
  */
-@SuppressWarnings("unchecked")
 public class CommonProxy
 {
-    public List<Announcement> announcementList = new ArrayList();
+    public ArrayList<Announcement> announcementList = new ArrayList<Announcement>();
 
     public void preInit()
     {
@@ -46,40 +42,13 @@ public class CommonProxy
                 BufferedReader in = null;
 
                 //Get out data stream
-                if (isURL)
-                {
-                    try
-                    {
-                        URL url = new URL(path);
-                        in = new BufferedReader(new InputStreamReader(url.openStream()));
-                    }
-                    catch (MalformedURLException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                else if (isFile)
-                {
-                    File file = new File(path);
-                    try
-                    {
-                        in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-                    }
-                    catch (FileNotFoundException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
+                in = getFileContents(path, isURL, isFile, in);
                 //If we have a stream
                 if (in != null)
                 {
                     try
                     {
-                        //Convert stream into a large string TODO find better way
+                        //Convert stream into a large string.
                         String textSoFar = "";
                         String inputLine;
                         while ((inputLine = in.readLine()) != null)
@@ -95,12 +64,7 @@ public class CommonProxy
                         {
                             ExternalAnnouncements.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
                         }
-                    }
-                    catch (FileNotFoundException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    catch (IOException e)
+                    } catch (IOException e)
                     {
                         e.printStackTrace();
                     }
@@ -110,60 +74,62 @@ public class CommonProxy
                 BufferedReader in = null;
 
                 //Get out data stream
-                if (isURL) {
-                    try {
-                        URL url = new URL(path);
-                        in = new BufferedReader(new InputStreamReader(url.openStream()));
-                    }
-                    catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else if (isFile) {
-                    File file = new File(path);
-                    try {
-                        in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-                    }
-                    catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
+                in = getFileContents(path, isURL, isFile, in);
                 //If we have a stream
-                if (in != null) {
+                if (in != null) try {
+                    //Convert stream into a large string.
+                    String textSoFar = "";
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        textSoFar += inputLine;
+                    }
+                    in.close();
                     try {
-                        //Convert stream into a large string TODO find better way
-                        String textSoFar = "";
-                        String inputLine;
-                        while ((inputLine = in.readLine()) != null) {
-                            textSoFar += inputLine;
-                        }
-                        in.close();
-                        try {
-                            processJsonFile(textSoFar);
-                        }
-                        catch (Exception e) {
-                            ExternalAnnouncements.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
-                        }
+                        processJsonFile(textSoFar);
+                    } catch (Exception e) {
+                        ExternalAnnouncements.LOGGER.error("Failed to parse announcement[" + textSoFar + "]\n", e);
                     }
-                    catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            } else {
+                ExternalAnnouncements.LOGGER.error("Unable to find a compatible file format, it needs to be either .txt or .json");
             }
         }
+    }
+
+    private BufferedReader getFileContents(String path, boolean isURL, boolean isFile, BufferedReader in) {
+        if (isURL)
+        {
+            try
+            {
+                URL url = new URL(path);
+                in = new BufferedReader(new InputStreamReader(url.openStream()));
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else if (isFile)
+        {
+            File file = new File(path);
+            try
+            {
+                in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return in;
     }
 
     /**
      * Parses the JSON file using Gson.
      * TODO Add more error/exception handling.
      */
-    public void processJsonFile(String string) throws RuntimeException {
+    private void processJsonFile(String string) throws RuntimeException {
 
         JsonElement jelement = new JsonParser().parse(string);
         JsonObject jobject = jelement.getAsJsonObject();
@@ -198,6 +164,9 @@ public class CommonProxy
         }
     }
 
+    /**
+     * Parses the txt file, also used for testing.
+     */
     public void processTextFile(String string) throws RuntimeException
     {
         if (string.contains("{") && string.contains("}"))
